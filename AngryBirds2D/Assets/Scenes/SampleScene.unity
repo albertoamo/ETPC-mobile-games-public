@@ -181,6 +181,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8720461062569691011, guid: 715b6223e5916c444bc0ce643ccf6534, type: 3}
   m_PrefabInstance: {fileID: 37867562}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &56991420 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4272795928372317274, guid: 5711fedeb57bcea40bdedfbfcbf409ba, type: 3}
+  m_PrefabInstance: {fileID: 5770727519091299314}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &89770795
 GameObject:
   m_ObjectHideFlags: 0
@@ -2640,7 +2645,7 @@ GameObject:
   - component: {fileID: 727923574}
   m_Layer: 0
   m_Name: Birdbox
-  m_TagString: Untagged
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2674,8 +2679,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AmmoController
   maxAmmoCount: 4
   offset: 0.05
-  birdPrefab: {fileID: 4380079021179514527, guid: 26f702417f0072f4fb8318533d31bba8, type: 3}
-  _birds: []
+  birdPrefab: {fileID: 6747010765629327913}
+  _birds:
+  - {fileID: 6747010765629327909}
+  - {fileID: 6747010765629327909}
+  - {fileID: 6747010765629327909}
+  - {fileID: 6747010765629327909}
 --- !u!1001 &777920392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3866,6 +3875,11 @@ Transform:
   - {fileID: 1713845447}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1304636960 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2079713096967355081, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+  m_PrefabInstance: {fileID: 6747010765629327908}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1367799710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4110,9 +4124,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 756730115224204391, guid: 26f702417f0072f4fb8318533d31bba8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -6700843523222788478, guid: e36f1251792eeba48b47610d624be66c, type: 3}
     - target: {fileID: 2062890772983113064, guid: 26f702417f0072f4fb8318533d31bba8, type: 3}
       propertyPath: m_Name
       value: BirdWhite
+      objectReference: {fileID: 0}
+    - target: {fileID: 2062890772983113064, guid: 26f702417f0072f4fb8318533d31bba8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4380079021179514527, guid: 26f702417f0072f4fb8318533d31bba8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4159,17 +4181,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26f702417f0072f4fb8318533d31bba8, type: 3}
---- !u!114 &1514588509 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5794436179860823437, guid: 26f702417f0072f4fb8318533d31bba8, type: 3}
-  m_PrefabInstance: {fileID: 1514588504}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04de2e6adfbc46143be4ec102228dbbe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdWhiteController
 --- !u!1 &1516539582
 GameObject:
   m_ObjectHideFlags: 0
@@ -5825,6 +5836,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slingshot
       objectReference: {fileID: 0}
+    - target: {fileID: 1569803429241521902, guid: 9a42a241c2c7d1e469be12babb6e8fc0, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 5480345273830847402, guid: 9a42a241c2c7d1e469be12babb6e8fc0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.07
@@ -5866,13 +5881,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5784358971868168646, guid: 9a42a241c2c7d1e469be12babb6e8fc0, type: 3}
-      propertyPath: isActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5784358971868168646, guid: 9a42a241c2c7d1e469be12babb6e8fc0, type: 3}
       propertyPath: _currentBird
       value: 
-      objectReference: {fileID: 1514588509}
+      objectReference: {fileID: 6747010765629327909}
+    - target: {fileID: 5784358971868168646, guid: 9a42a241c2c7d1e469be12babb6e8fc0, type: 3}
+      propertyPath: _currentTarget
+      value: 
+      objectReference: {fileID: 6747010765629327913}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5935,6 +5950,135 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5711fedeb57bcea40bdedfbfcbf409ba, type: 3}
+--- !u!1001 &6747010765629327908
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: _renderer
+      value: 
+      objectReference: {fileID: 1304636960}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: _sprites.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: '_sprites.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1177292306647841182, guid: e36f1251792eeba48b47610d624be66c, type: 3}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: '_sprites.Array.data[1]'
+      value: 
+      objectReference: {fileID: -8661112409331031650, guid: e36f1251792eeba48b47610d624be66c, type: 3}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: '_sprites.Array.data[2]'
+      value: 
+      objectReference: {fileID: -3734240065569537768, guid: e36f1251792eeba48b47610d624be66c, type: 3}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: method.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: method.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6747010765629327909}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: method.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReloadNext
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: method.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BirdBlackController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561371645242050541, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: method.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3721269865745148431, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: trailSprite
+      value: 
+      objectReference: {fileID: 56991420}
+    - target: {fileID: 3721269865745148431, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: explosionForce
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3721269865745148431, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: explosionRadius
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3721269865745148431, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: affectedLayers.m_Bits
+      value: 192
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813178457567962311, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+      propertyPath: m_Name
+      value: BirdBlack
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+--- !u!114 &6747010765629327909 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3721269865745148431, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+  m_PrefabInstance: {fileID: 6747010765629327908}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e11e2ab7e0e30d44e8b2522441c4c04a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BirdBlackController
+--- !u!4 &6747010765629327913 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6220855866871908407, guid: fed80e4250dcb544caac6baca86be271, type: 3}
+  m_PrefabInstance: {fileID: 6747010765629327908}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8500522680638481555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6017,6 +6161,7 @@ SceneRoots:
   - {fileID: 727923573}
   - {fileID: 8500522680638481555}
   - {fileID: 1514588504}
+  - {fileID: 6747010765629327908}
   - {fileID: 1972876664516418496}
   - {fileID: 1106972699}
   - {fileID: 777920392}
