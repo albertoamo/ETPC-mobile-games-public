@@ -7,7 +7,7 @@ public class BirdController : MonoBehaviour
     public float trailDelay = 0.3f;
     public Transform trailSprite;
 
-    [HideInInspector] public Rigidbody2D Rbody;
+   public Rigidbody2D Rbody;
 
     private Vector3 _timePosition;
 

@@ -99,10 +99,11 @@ public class SlingshotController : MonoBehaviour
     public void Shot()
     {
         _currentBird.Rbody.bodyType = RigidbodyType2D.Dynamic;
-
+        
         float forceImpulse = _distance / _maxDistance;
         Vector2 direction = _startPosition.position - _currentBird.transform.position;
         _currentBird.Rbody.AddForce(direction.normalized * _force * forceImpulse);
+      
         Debug.Log(_distance + " " + _maxDistance + " -- " + forceImpulse);
 
         Invoke(nameof(ActivateBird), 0.1f);
