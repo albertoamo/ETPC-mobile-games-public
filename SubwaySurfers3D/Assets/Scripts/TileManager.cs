@@ -13,16 +13,15 @@ public class TileManager : MonoBehaviour
     {
         _tiles = new List<TileController>();
 
-        for (int i = 0; i < tileCount; i++)
+        AddTile(0);
+        for (int i = 1; i < tileCount; i++)
         {
             AddTile();
         }
     }
 
-    void Update()
+    void Update() 
     {
-        Debug.Log(_tiles[0].pivotBack.position.z + "-- " + Camera.main.transform.position.z);
-
         if (_tiles[0].pivotBack.position.z < Camera.main.transform.position.z)
         {
             RemoveTile();
@@ -38,7 +37,12 @@ public class TileManager : MonoBehaviour
 
     private void AddTile()
     {
-        int tileIndex = Random.Range(0, tilePrefabs.Length - 1);
+        int tileIndex = Random.Range(0, tilePrefabs.Length);
+        AddTile(tileIndex);
+    }
+
+    private void AddTile(int tileIndex)
+    {
         Transform currentTile = tilePrefabs[tileIndex];
 
         Transform tile = Instantiate(currentTile, transform);
