@@ -4,7 +4,6 @@ public class CollectableCoin : MonoBehaviour
 {
     private BoxCollider _box;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _box = GetComponent<BoxCollider>();
@@ -12,10 +11,10 @@ public class CollectableCoin : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            // Play particle
-            // Sum the coin to my wallet
+            // Play particle (si tienes)
+            CoinWallet.Instance.AddCoins(1);
             Destroy(gameObject);
         }
     }

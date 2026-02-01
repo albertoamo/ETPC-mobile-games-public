@@ -22,11 +22,16 @@ public class GSOVER : GameState
         UIOver pause = FindObjectOfType<UIOver>();
         pause.gameObject.SetActive(false);
     }
-     
+
     public void ReloadScene()
     {
+        // Resetear power-ups del run anterior
+        if (CoinWallet.Instance != null)
+            CoinWallet.Instance.ResetPowerUps();
+
         SceneManager.LoadScene("spmap_tiling");
         GameStateManager.Instance.ChangeGameState(GameState.StateType.GAMEPLAY);
+        CoinWallet.Instance.ResetRun();
     }
 
     public void ReturnMainMenu()
@@ -34,4 +39,5 @@ public class GSOVER : GameState
         SceneManager.LoadScene("MainMenu");
         GameStateManager.Instance.ChangeGameState(GameState.StateType.MAINMENU);
     }
+
 }

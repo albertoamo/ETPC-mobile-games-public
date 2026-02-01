@@ -3,23 +3,25 @@ using UnityEngine;
 
 public class TrainMover : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private Tween moveTween;
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
-            transform.DOLocalMoveZ(-64, 7);
+            // Evita crear el tween varias veces
+            if (moveTween != null && moveTween.IsActive()) return;
+
+            moveTween = transform.DOLocalMoveZ(-64, 7);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // MUY IMPORTANTE: matar el tween antes de destruir
+        if (moveTween != null && moveTween.IsActive())
+        {
+            moveTween.Kill(false);
         }
     }
 }

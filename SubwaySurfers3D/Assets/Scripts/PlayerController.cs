@@ -1,5 +1,4 @@
-using System.Collections;
-using Unity.VisualScripting;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -22,8 +21,20 @@ public class PlayerController : MonoBehaviour
     public LayerMask collisionLayerMask;
     public float speedIncremental = 0.01f;
 
+    [Header("Distance")]
+    public float distanceMeters = 0f;
+    public float DistanceMeters => distanceMeters;
+
+
+
     // Lane change
     [HideInInspector] public int currentLane = 1;
+
+    // Shield
+    private bool _shieldActive = false;
+    private Coroutine _shieldRoutine;
+    private float _postHitInvuln = 0f;
+    public bool ShieldActive => _shieldActive;
 
     private bool _isSliding = false;
     private bool _isAlive = true;
@@ -34,24 +45,19 @@ public class PlayerController : MonoBehaviour
     private float timeIncrement = 0f;
     private Vector3 _playerHorDir;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _charCtr = GetComponent<CharacterController>();
         targetPosition = transform.position;
+
+        distanceMeters = 0f;   // ← AQUÍ
     }
+
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            MoveLane(-1);
-        }
-
-        if(Input.GetKeyDown(KeyCode.D))
-        {
-            MoveLane(1);
-        }
+        if (Input.GetKeyDown(KeyCode.A)) MoveLane(-1);
+        if (Input.GetKeyDown(KeyCode.D)) MoveLane(1);
 
         if (Input.GetKeyDown(KeyCode.Space) && _charCtr.isGrounded)
         {
@@ -65,21 +71,26 @@ public class PlayerController : MonoBehaviour
         }
 
         CheckHealth();
+
+        if (_postHitInvuln > 0f)
+            _postHitInvuln -= Time.deltaTime;
     }
-    // Update is called once per frame
+
     private void FixedUpdate()
     {
         ComputeGravity();
 
         timeIncrement += Time.fixedDeltaTime * speedIncremental;
         float forwardFinalSpeed = forwardSpeed + timeIncrement;
+        distanceMeters += forwardFinalSpeed * Time.fixedDeltaTime;
+
 
         Vector3 forwardMove = Vector3.forward * forwardFinalSpeed * Time.fixedDeltaTime;
         Vector3 verticalMove = Vector3.up * _currentGravity;
         Vector3 horizontalMove = Vector3.MoveTowards(_charCtr.transform.position, targetPosition, laneSwapSpeed * Time.fixedDeltaTime);
         horizontalMove = new Vector3(horizontalMove.x - transform.position.x, 0, 0);
-        _playerHorDir = forwardMove + horizontalMove;
 
+        _playerHorDir = forwardMove + horizontalMove;
         _charCtr.Move(_playerHorDir + verticalMove);
     }
 
@@ -88,10 +99,10 @@ public class PlayerController : MonoBehaviour
         int newLane = currentLane + direction;
         newLane = Mathf.Clamp(newLane, 0, 2);
 
-        if(currentLane != newLane)
+        if (currentLane != newLane)
         {
             currentLane = newLane;
-            float newx = (currentLane -1) * laneDistance;
+            float newx = (currentLane - 1) * laneDistance;
             targetPosition = new Vector3(newx, transform.position.y, transform.position.z);
         }
     }
@@ -111,7 +122,6 @@ public class PlayerController : MonoBehaviour
     {
         _isSliding = true;
 
-        // Set collider and visuals to sliding
         Vector3 oldCenter = _charCtr.center;
         float oldHeight = _charCtr.height;
 
@@ -123,12 +133,10 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("Roll", true);
         yield return new WaitForEndOfFrame();
-
         animator.SetBool("Roll", false);
 
         yield return new WaitForSeconds(slideTime);
 
-        // Reset to default values
         _charCtr.center = oldCenter;
         _charCtr.height = oldHeight;
 
@@ -139,16 +147,24 @@ public class PlayerController : MonoBehaviour
     }
 
     public void CheckHealth()
-    {   
+    {
         RaycastHit hit;
         Vector3 p1 = transform.position + _playerHorDir * _charCtr.radius;
         Vector3 p2 = p1 + Vector3.up * _charCtr.height * 0.5f;
 
-        if(Physics.CapsuleCast(p1, p2, _charCtr.radius * 0.5f, _playerHorDir, out hit, hitDistance, collisionLayerMask, QueryTriggerInteraction.Ignore))
+        if (Physics.CapsuleCast(p1, p2, _charCtr.radius * 0.5f, _playerHorDir, out hit, hitDistance, collisionLayerMask, QueryTriggerInteraction.Ignore))
         {
-            Debug.Log(hit.collider.name, hit.collider.gameObject);
-            if(_isAlive)
+            if (_isAlive)
             {
+                if (_postHitInvuln > 0f) return;
+
+                if (_shieldActive)
+                {
+                    ConsumeShield();
+                    return;
+                }
+
+
                 GameStateManager.Instance.ChangeGameState(GameState.StateType.OVER);
                 _isAlive = false;
             }
@@ -158,23 +174,72 @@ public class PlayerController : MonoBehaviour
         {
             if (_isAlive)
             {
+                if (_postHitInvuln > 0f) return;
+
+                if (_shieldActive)
+                {
+                    ConsumeShield();
+                    return;
+                }
+
                 GameStateManager.Instance.ChangeGameState(GameState.StateType.OVER);
                 _isAlive = false;
             }
         }
     }
 
-    void OnDrawGizmosSelected()
+    public void ActivateShield(float duration)
     {
-        Vector3 p1 = transform.position; 
-        Vector3 p2 = p1 + Vector3.up * _charCtr.height * 0.75f;
+        _shieldActive = true;
 
-        Gizmos.color = new Color(0.75f, 0.0f, 0.0f, 0.75f);
-
-        // Convert the local coordinate values into world
-        // coordinates for the matrix transformation.
-        //Gizmos.matrix = transform.localToWorldMatrix;
-        Gizmos.DrawCube(p1, Vector3.one * 0.25f);
-        Gizmos.DrawCube(p2, Vector3.one * 0.25f);
+        if (_shieldRoutine != null) StopCoroutine(_shieldRoutine);
+        _shieldRoutine = StartCoroutine(ShieldTimer(duration));
     }
+
+    private IEnumerator ShieldTimer(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        _shieldActive = false;
+        _shieldRoutine = null;
+    }
+
+    private void ConsumeShield()
+    {
+        _shieldActive = false;
+        _postHitInvuln = 0.5f;
+    }
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (!_shieldActive) return;
+
+        int envLayer = LayerMask.NameToLayer("CollisionEnvironment");
+        if (envLayer == -1) return;
+
+        if (hit.gameObject.layer != envLayer) return;
+
+        // 1) Consumir escudo (si quieres que sea 1 golpe)
+        ConsumeShield();
+
+        // 2) Encontrar el Tile (para NO destruirlo)
+        var tile = hit.collider.GetComponentInParent<TileController>();
+
+        // 3) Si hay tile, destruimos el primer hijo bajo el tile (el obstáculo), no el tile entero
+        if (tile != null)
+        {
+            Transform obstacle = hit.collider.transform;
+
+            // Subimos en la jerarquía hasta que el padre sea el Tile
+            while (obstacle.parent != null && obstacle.parent != tile.transform)
+            {
+                obstacle = obstacle.parent;
+            }
+
+            Destroy(obstacle.gameObject);
+            return;
+        }
+
+        // Si no pertenece a un tile, destruye solo el objeto del collider (sin root)
+        Destroy(hit.collider.gameObject);
+    }
+    // test push
 }
