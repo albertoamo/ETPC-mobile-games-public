@@ -5,7 +5,7 @@ public class AmmoController : MonoBehaviour
 {
     public static AmmoController instance;
 
-    public int maxAmmoCount = 4;
+    public int maxAmmoCount = 5;
     public float offset = 0.05f;
     public Transform birdPrefab;
 

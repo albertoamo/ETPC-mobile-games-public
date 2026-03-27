@@ -139,13 +139,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a10327f4429c45f47a4e21f84e90ab92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlingshotController
-  _currentBird: {fileID: 0}
+  _currentBird: {fileID: 1125729765765340866, guid: 76609e6db8df60e4f9a410ebd42e6eed, type: 3}
   _startPosition: {fileID: 7525551029455631107}
   _force: 700
   _maxDistance: 1.25
   _currentTarget: {fileID: 0}
   _lineFront: {fileID: 5729054783848652731}
   _lineBack: {fileID: 1627282698310368904}
+  isActive: 1
 --- !u!1 &2643981166406427455
 GameObject:
   m_ObjectHideFlags: 0
