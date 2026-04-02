@@ -146,6 +146,7 @@ MonoBehaviour:
   _currentTarget: {fileID: 0}
   _lineFront: {fileID: 5729054783848652731}
   _lineBack: {fileID: 1627282698310368904}
+  isActive: 1
 --- !u!1 &2643981166406427455
 GameObject:
   m_ObjectHideFlags: 0
